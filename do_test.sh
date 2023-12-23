@@ -2,7 +2,7 @@
 
 compilers=("gcc" "clang")
 compile_options=("" "-O0" "-O1" "-O2" "-O3" "-Og" "-Ofast" "-Os" "-Oz")
-
+errored_cases=()
 dir=$(cd "$(dirname "$0")" && pwd)
 
 for cc in "${compilers[@]}"; do
@@ -23,11 +23,20 @@ for cc in "${compilers[@]}"; do
 				echo -e "\e[1;92mOK\e[0m"
 			else
 				echo -e "\e[1;91mERR\e[0m"
+				errored_cases+=("$cc $options $(basename "$f")")
 			fi
 			echo
 		done
-
 	done
 done
 
 
+
+if [[ ${#errored_cases[@]} -eq 0 ]]; then
+	echo yeah! worked in all cases!
+else
+	echo Errored in:
+	for c in "${errored_cases[@]}"; do
+		echo "- $c"
+	done
+fi
