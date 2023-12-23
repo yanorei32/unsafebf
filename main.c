@@ -9,11 +9,11 @@ void f(
 	volatile int *cursor,
 	volatile int *block,
 	const char *program,
-	volatile uint8_t *p
+	uint8_t *p
 ) {
 	// Get a stack address
 	volatile Void a;
-	p = (volatile uint8_t *) &a;
+	p = (uint8_t *) &a;
 
 	// Initialize first cell
 	*p = 0;
@@ -24,8 +24,8 @@ void f(
 		switch(*program) {
 			case '+': ++(*p); break;
 			case '-': --(*p); break;
-			case '.': write(1, p, 1); break;
-			case ',': read(1, p, 1); break;
+			case '.': write(1, (void*) p, 1); break;
+			case ',': read(1, (void*) p, 1); break;
 			case '<': --*cursor, ++p; break;
 
 			case '>':

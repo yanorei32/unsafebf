@@ -17,9 +17,12 @@ for cc in "${compilers[@]}"; do
 		continue
 	fi
 
-
 	for options in "${compile_options[@]}"; do
 		$cc main.c $options -o unsafebf 2>/dev/null
+		if [[ $? -ne 0 ]]; then
+			echo -e "\e[1;91mCOMPILE ERR\e[0m"
+			continue
+		fi
 		for f in "$dir"/tests/*.bf; do
 			echo    "TEST    : $cc $options"
 			echo    "TESTCASE: $(basename "$f")"
