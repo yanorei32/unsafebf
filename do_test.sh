@@ -1,6 +1,6 @@
 #!/bin/bash
 
-compilers=("gcc" "clang" "g++" "clang++")
+compilers=("gcc" "clang" "g++" "clang++" "musl-gcc")
 compile_options=("" "-O0" "-O1" "-O2" "-O3" "-Og" "-Ofast" "-Os" "-Oz")
 errored_cases=()
 worked_cases=()
@@ -17,9 +17,9 @@ for cc in "${compilers[@]}"; do
 		continue
 	fi
 
-	$cc main.c $options -o unsafebf 2>/dev/null
 
 	for options in "${compile_options[@]}"; do
+		$cc main.c $options -o unsafebf 2>/dev/null
 		for f in "$dir"/tests/*.bf; do
 			echo    "TEST    : $cc $options"
 			echo    "TESTCASE: $(basename "$f")"
