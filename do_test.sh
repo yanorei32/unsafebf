@@ -1,9 +1,15 @@
 #!/bin/bash
 
-compilers=("gcc" "clang")
+compilers=("gcc" "clang" "g++" "clang++")
 compile_options=("" "-O0" "-O1" "-O2" "-O3" "-Og" "-Ofast" "-Os" "-Oz")
 errored_cases=()
+worked_cases=()
 dir=$(cd "$(dirname "$0")" && pwd)
+
+if ! type "diff" > /dev/null 2>&1; then
+	echo diff is not installed
+	exit 1
+fi
 
 for cc in "${compilers[@]}"; do
 	if ! type "$cc" > /dev/null 2>&1; then
@@ -21,6 +27,7 @@ for cc in "${compilers[@]}"; do
 
 			if [[ $? -eq 0 ]]; then
 				echo -e "\e[1;92mOK\e[0m"
+				worked_cases+=("$cc $options $(basename "$f")")
 			else
 				echo -e "\e[1;91mERR\e[0m"
 				errored_cases+=("$cc $options $(basename "$f")")
@@ -35,6 +42,11 @@ done
 if [[ ${#errored_cases[@]} -eq 0 ]]; then
 	echo yeah! worked in all cases!
 else
+	echo Worked in:
+	for c in "${worked_cases[@]}"; do
+		echo "- $c"
+	done
+	echo
 	echo Errored in:
 	for c in "${errored_cases[@]}"; do
 		echo "- $c"
