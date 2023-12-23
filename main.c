@@ -4,10 +4,16 @@
 
 struct {} typedef Void;
 
-void f(int *allocated, int *cursor, int *block, const char *program, uint8_t *p) {
+void f(
+	volatile int *allocated,
+	volatile int *cursor,
+	volatile int *block,
+	const char *program,
+	volatile uint8_t *p
+) {
 	// Get a stack address
 	volatile Void a;
-	p = (uint8_t *) &a;
+	p = (volatile uint8_t *) &a;
 
 	// Initialize first cell
 	*p = 0;
@@ -74,7 +80,7 @@ void f(int *allocated, int *cursor, int *block, const char *program, uint8_t *p)
 }
 
 int main(int argc, char** argv) {
-	int allocated, cursor, block;
+	volatile int allocated, cursor, block;
 
 	if (argc-2)
 		printf("%s [brainfuck code]\n", argv[0]);
