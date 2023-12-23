@@ -17,13 +17,15 @@ for cc in "${compilers[@]}"; do
 		continue
 	fi
 
+	$cc main.c $options -o unsafebf 2>/dev/null
+
 	for options in "${compile_options[@]}"; do
 		for f in "$dir"/tests/*.bf; do
 			echo    "TEST    : $cc $options"
 			echo    "TESTCASE: $(basename "$f")"
 			echo -n "RESULT  : "
 
-			diff <($cc main.c $options -o unsafebf 2>/dev/null && ./unsafebf "$(cat "$f")") <(echo 0) >/dev/null
+			diff <(./unsafebf "$(cat "$f")") <(echo 0) >/dev/null
 
 			if [[ $? -eq 0 ]]; then
 				echo -e "\e[1;92mOK\e[0m"
