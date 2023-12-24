@@ -24,8 +24,8 @@ void f(
 		switch(*program) {
 			case '+': ++(*p); break;
 			case '-': --(*p); break;
-			case '.': write(1, (void*) p, 1); break;
-			case ',': read(1, (void*) p, 1); break;
+			case '.': write(STDOUT_FILENO, (void*) p, 1); break;
+			case ',': read(STDIN_FILENO, (void*) p, 1); break;
 			case '<': --*cursor, ++p; break;
 
 			case '>':
